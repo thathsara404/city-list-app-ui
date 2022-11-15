@@ -1,0 +1,32 @@
+{
+  "name": "User-City-App",
+  "version": "1.0.0",
+  "description": "This is the UI module",
+  "author": "Thathsara",
+  "license": "",
+  "source": "public/index.html",
+  "scripts": {
+    "dev-build": "env-cmd --no-override -e dev node ./dev-build.js",
+    "dev-server": "lite-server --baseDir ./dist",
+    "watch-script": "env-cmd --no-override -e dev node ./dev-build.js",
+    "watch": "nodemon --exec yarn watch-script",
+    "lint": "eslint . --ext .jsx --ext .js ./public --quiet"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "2.7.0",
+    "env-cmd": "^10.1.0",
+    "eslint": "^8.23.1",
+    "eslint-plugin-react": "^7.31.8",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "lite-server": "^2.6.1",
+    "nodemon": "^2.0.19",
+    "parcel": "^2.7.0",
+    "process": "^0.11.10"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^5.2.0",
+    "styled-components": "^5.3.5"
+  }
+}

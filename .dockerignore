@@ -1,0 +1,11 @@
+.dockerignore
+node_modules
+.parcel-cache
+.vscode
+test
+README.md
+.eslintrc.js
+nodemon.json
+docker-compose-dev.yml
+DockerfileDev
+dist
