@@ -8,8 +8,8 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-    networks:
-      - user-city-view-ui-network
+
 networks:
-  user-city-view-ui-network:
-    driver: bridge
+  default:
+    name: city-list-app_city-list-app-network
+    external: true

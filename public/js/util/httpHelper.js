@@ -10,7 +10,7 @@ export class HTTPHelper {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getAuthToken()}`,
+                //'Authorization': `Bearer ${getAuthToken()}`,
                 ...headers
             }
         });      
@@ -23,7 +23,7 @@ export class HTTPHelper {
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getAuthToken()}`,
+                // 'Authorization': `Bearer ${getAuthToken()}`,
                 ...headers
             },
             body: JSON.stringify(data)
@@ -37,7 +37,7 @@ export class HTTPHelper {
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getAuthToken()}`,
+                //'Authorization': `Bearer ${getAuthToken()}`,
                 ...headers
             },
             body: JSON.stringify(data)
@@ -51,7 +51,7 @@ export class HTTPHelper {
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getAuthToken()}`,
+                //'Authorization': `Bearer ${getAuthToken()}`,
                 ...headers
             },
             body: JSON.stringify(data)
@@ -65,7 +65,7 @@ export class HTTPHelper {
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getAuthToken()}`,
+                //'Authorization': `Bearer ${getAuthToken()}`,
                 ...headers
             },
             body: JSON.stringify(data)

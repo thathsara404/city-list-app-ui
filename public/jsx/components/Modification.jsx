@@ -1,4 +1,5 @@
 import { useReducer, useRef } from 'react';
+import { USER } from '../../js/const/userRolesConst';
 import { HTTPHelper } from '../../js/util/httpHelper';
 import { PATCH_CITY_URL } from '../../js/util/urlBuilder';
 import { UserContextConsumer } from '../context/userContext';
@@ -40,7 +41,8 @@ const Modification = () => {
 
     return (
         <UserContextConsumer>
-            {({ user, isLoggedIn }) => isLoggedIn !== false ? (
+            {({ user, isLoggedIn }) => isLoggedIn !== false &&
+                                        user.role !== USER ? (
                 <>
                     <h1>Update City</h1>
                     <form action='' method='post'>

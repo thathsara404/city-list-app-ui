@@ -50,7 +50,7 @@ const AppRouter = () => {
                         </Route>
 
                         <Route path='/' component={() => <Container>
-                            <Home/>
+                            <Home updateUserState={setUserState}/>
                         </Container>}>
                         </Route>
 

@@ -36,9 +36,8 @@ const Login = ({ updateUserState }) => {
         HTTPHelper.post(LOGIN_USER_URL, {}, payload).then((response, error) => {
             if (!error) {
                 updateUserState(state => ({ ...state, isLoggedIn: true,
-                    user: { ...user, id: response.id,
-                        firstName: response.firstName, lastName: response.lastName, role: response.role } }));
-                setAuthToken(response.token);
+                    user: { ...user} }));
+                setAuthToken(response.headers.get("Authorization"));
                 // eslint-disable-next-line no-alert
                 alert('Login Success !. You have access to other sections now.');
             } else {

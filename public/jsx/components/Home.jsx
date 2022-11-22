@@ -1,9 +1,10 @@
 import { useReducer, useRef } from 'react';
 import { HTTPHelper } from '../../js/util/httpHelper';
 import { CREATE_USER_URL } from '../../js/util/urlBuilder';
+import { UserContextConsumer } from '../context/userContext';
 import { BigInfoButton } from './Button';
 
-const Home = () => {
+const Home = ({updateUserState}) => {
 
     const firstNameRef = useRef();
     const lastNameRef = useRef();
@@ -43,7 +44,7 @@ const Home = () => {
     }
     );
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event, user) => {
         event.preventDefault();
         const userPayload = {
             'firstName': state.firstName,
@@ -54,9 +55,17 @@ const Home = () => {
             'password': state.password,
             'tele': state.tele
         };
-        HTTPHelper.post(CREATE_USER_URL, {}, userPayload).then((response, error) => {
+        HTTPHelper.post(CREATE_USER_URL, {}, userPayload).then(async (response, error) => {
             if (!error) {
                 // eslint-disable-next-line no-alert
+                const result = await response.json();
+                const resultData = result.data[0];
+                updateUserState(state => ({ ...state, isLoggedIn: false,
+                    user: { ...user, id: resultData.userId,
+                        firstName: resultData.firstName,
+                        lastName: resultData.lastName,
+                        role: resultData.userRole,
+                        email: resultData.email } }));
                 alert('Your profile has been created successfully !');
             } else {
                 console.error('An error occurred: ' + error);
@@ -66,56 +75,60 @@ const Home = () => {
 
     return (
         <>
-            <h1>Welcome to User City App UI</h1>
-            <h3>Please register here</h3>
-
-            <form action='' method='post'>
-                <label htmlFor='firstName'>
-                    First Name: <br/><input ref={firstNameRef} type='text' name='firstName' id='firstName'
-                        onChange={() => {
-                            setFormState({ type: 'update-first-name' });
-                        }} required/>
-                </label><br/><br/>
-                <label htmlFor='lastName'>
-                    Last Name: <br/><input ref={lastNameRef} type='text' name='lastName' id='lastName'
-                        onChange={() => {
-                            setFormState({ type: 'update-last-name' });
-                        }} required/>
-                </label><br/><br/>
-                <label htmlFor='email'>
-                    Email: <br/><input ref={emailRef} type='text' name='email' id='email'
-                        onChange={() => {
-                            setFormState({ type: 'update-email' });
-                        }} required/>
-                </label><br/><br/>
-                <label htmlFor='role'>
-                    Role: <br/><input ref={roleRef} type='text' name='role' id='role'
-                        onChange={() => {
-                            setFormState({ type: 'update-role' });
-                        }} required/>
-                </label><br/><br/>
-                <label htmlFor='username'>
-                    Username: <br/><input ref={usernameRef} type='text' name='username' id='username'
-                        onChange={() => {
-                            setFormState({ type: 'update-username' });
-                        }} required/>
-                </label><br/><br/>
-                <label htmlFor='password'>
-                    Password: <br/><input ref={passwordRef} type='password' name='password' id='password'
-                        onChange={() => {
-                            setFormState({ type: 'update-password' });
-                        }} required/>
-                </label><br/><br/>
-                <label htmlFor='tele'>
-                    Tele: <br/><input ref={teleRef} type='text' name='tele' id='tele'
-                        onChange={() => {
-                            setFormState({ type: 'update-tele' });
-                        }} required/>
-                </label><br/><br/>
-                <BigInfoButton onClick={(event) =>
-                { handleSubmit(event); }} text='Register User' />
-            </form>
-            
+        <UserContextConsumer>
+        {({ user }) => (
+            <>
+                <h1>Welcome to User City App UI</h1>
+                <h3>Please register here</h3>
+                    <form action='' method='post'>
+                        <label htmlFor='firstName'>
+                            First Name: <br/><input ref={firstNameRef} type='text' name='firstName' id='firstName'
+                                onChange={() => {
+                                    setFormState({ type: 'update-first-name' });
+                                }} required/>
+                        </label><br/><br/>
+                        <label htmlFor='lastName'>
+                            Last Name: <br/><input ref={lastNameRef} type='text' name='lastName' id='lastName'
+                                onChange={() => {
+                                    setFormState({ type: 'update-last-name' });
+                                }} required/>
+                        </label><br/><br/>
+                        <label htmlFor='email'>
+                            Email: <br/><input ref={emailRef} type='text' name='email' id='email'
+                                onChange={() => {
+                                    setFormState({ type: 'update-email' });
+                                }} required/>
+                        </label><br/><br/>
+                        <label htmlFor='role'>
+                            Role: <br/><input ref={roleRef} type='text' name='role' id='role'
+                                onChange={() => {
+                                    setFormState({ type: 'update-role' });
+                                }} required/>
+                        </label><br/><br/>
+                        <label htmlFor='username'>
+                            Username: <br/><input ref={usernameRef} type='text' name='username' id='username'
+                                onChange={() => {
+                                    setFormState({ type: 'update-username' });
+                                }} required/>
+                        </label><br/><br/>
+                        <label htmlFor='password'>
+                            Password: <br/><input ref={passwordRef} type='password' name='password' id='password'
+                                onChange={() => {
+                                    setFormState({ type: 'update-password' });
+                                }} required/>
+                        </label><br/><br/>
+                        <label htmlFor='tele'>
+                            Tele: <br/><input ref={teleRef} type='text' name='tele' id='tele'
+                                onChange={() => {
+                                    setFormState({ type: 'update-tele' });
+                                }} required/>
+                        </label><br/><br/>
+                        <BigInfoButton onClick={(event) =>
+                        { handleSubmit(event, user); }} text='Register User' />
+                    </form>
+                </>
+                )}
+            </UserContextConsumer>
         </>
     );
 };
