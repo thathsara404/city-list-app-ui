@@ -1,11 +1,12 @@
 import { useReducer, useRef } from 'react';
 import { USER } from '../../js/const/userRolesConst';
+import { getAuthToken } from '../../js/util/browserStorageUtil';
 import { HTTPHelper } from '../../js/util/httpHelper';
-import { PATCH_CITY_URL } from '../../js/util/urlBuilder';
+import { GET_CITY_URL, PATCH_CITY_URL } from '../../js/util/urlBuilder';
 import { UserContextConsumer } from '../context/userContext';
 import { BigInfoButton } from './Button';
 
-const Modification = () => {
+const Modification = ({updateUserState}) => {
 
     const cityNameRef = useRef();
     const cityImageURLRef = useRef();
@@ -29,12 +30,26 @@ const Modification = () => {
     }
     );
 
-    const handleSubmit = (event, city) => {
+    const handleSubmit = (event, cityId) => {
         event.preventDefault();
         const patchData = { 'name': state.cityName, 'photoURL': state.cityURL };
-        HTTPHelper.patch(`${PATCH_CITY_URL}${city.id}`, {}, patchData).then((response, error) => {
-            if (response) {
-                alert("Successful!!")
+        HTTPHelper.patch(`${PATCH_CITY_URL}${cityId}`, 
+        {"Authorization": `Bearer ${getAuthToken()}`},
+         patchData).then(async (response, error) => {
+            if (error) {
+                console.error("Error occurred !!!")
+            } else {
+                HTTPHelper.get(`${GET_CITY_URL}${cityId}`,
+                {"Authorization": `Bearer ${getAuthToken()}`}).then(async(response, error) => {
+                    if (error) {
+                        console.error("Error occurred !!!")
+                    } else {
+                        const result = await response.json();
+                        const resultData = result.data[0];
+                        updateUserState(state => ({ ...state,
+                            city: {cityId: cityId, cityURL: resultData?.photoURL, cityName: resultData?.name} } ));
+                    }
+                });
             }
         });
     };
@@ -65,7 +80,7 @@ const Modification = () => {
                                 }} required/>
                         </label><br/><br/>
                         <BigInfoButton onClick={(event) =>
-                        { handleSubmit(event, state.id); }} text='Update City' />
+                        { handleSubmit(event, state.cityId); }} text='Update City' />
                     </form>
                 </>
             ) : (

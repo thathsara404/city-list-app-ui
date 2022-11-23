@@ -4,16 +4,20 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Modification from './components/Modification';
 import Profile from './components/Profile';
-import SplitScreen from './components/SplitScreen';
 import Container from './Container';
 import '../scss/container.scss';
 import { useState } from 'react';
 import { UserContext } from './context/userContext';
 import ErrorBoundary from './error/ErrorBoundary';
+import { CityContext } from './context/cityContext';
+import SplitScreen from './components/SplitScreen';
+import CityView from './components/CityView';
 
 const AppRouter = () => {
 
-    const [state, setUserState] = useState({ user: {}, isLoggedIn: false });
+    const [state, setUserState] = useState({ user: {},
+            isLoggedIn: false,
+            city: {cityName: '', cityURL: '', cityId: ''} });
 
     return (
         <ErrorBoundary>
@@ -40,7 +44,12 @@ const AppRouter = () => {
                         </Route>
 
                         <Route path='/update' component={() => <Container>
-                                <Modification updateUserState={setUserState}/>
+                            <CityContext.Provider value={state.city}>
+                                <SplitScreen>
+                                    <CityView />
+                                    <Modification updateUserState={setUserState}/>
+                                </SplitScreen>
+                            </CityContext.Provider>
                         </Container>}>
                         </Route>
 

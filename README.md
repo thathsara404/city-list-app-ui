@@ -24,6 +24,8 @@ User can sign into his/her profile and edit a city with this simple dashboard.
     - yarn add react-dom: to support to React core
     - yarn add react-router-dom: routing in React
     - yarn add styled-components: a good way to design self dependant components
+- JWT Decode
+    - yarn add jwt-decode: decode jwt token and access claims
 
 # Steps to run manually
 | Step  | Instructions                                | Description                                                                                               |
